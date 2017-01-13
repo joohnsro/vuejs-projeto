@@ -1,0 +1,1 @@
+{"bills-receives":[{"id":1,"date_due":"15\/01\/2017","name":"Projeto Symfony","value":2000,"done":true},{"id":2,"date_due":"19\/01\/2017","name":"Projeto Laravel","value":1600,"done":true},{"id":3,"date_due":"29\/01\/2017","name":"Projeto Silex","value":600,"done":false}]}
