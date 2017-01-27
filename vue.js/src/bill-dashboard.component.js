@@ -11,34 +11,32 @@ window.billDashboardComponent = Vue.extend({
         Saldo total: {{ total | currency 'R$ ' }}
     </p>
     `,
-    data: function () {
+    data() {
         return {
             totalPays: 0,
             totalReceives: 0,
             total: 0
         };
     },
-    created: function () {
+    created() {
         this.getTotalBillsPays();
         this.getTotalBillsReceives();
         this.updateTotal();
     },
     methods: {
-        getTotalBillsPays: function () {
-            var self = this;
-            BillPay.totalDone().then(function (response) {
-                self.totalPays = response.data.total;
-                self.updateTotal();
+        getTotalBillsPays() {
+            BillPay.totalDone().then((response) => {
+                this.totalPays = response.data.total;
+                this.updateTotal();
             });
         },
-        getTotalBillsReceives: function () {
-            var self = this;
-            BillReceive.totalDone().then(function (response) {
-                self.totalReceives = response.data.total;
-                self.updateTotal();
+        getTotalBillsReceives() {
+            BillReceive.totalDone().then((response) => {
+                this.totalReceives = response.data.total;
+                this.updateTotal();
             });
         },
-        updateTotal: function () {
+        updateTotal() {
             this.total = this.totalReceives - this.totalPays;
         }
     }
