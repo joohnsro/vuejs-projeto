@@ -1,8 +1,4 @@
-window.billReceiveListComponent = Vue.extend({
-    components: {
-        'modal-component': modalComponent
-    },
-    template: `
+<template>
     <table class="bordered striped highlight centered responsive-table">
         <thead>
         <tr>
@@ -10,7 +6,7 @@ window.billReceiveListComponent = Vue.extend({
             <th>Vencimento</th>
             <th>Nome</th>
             <th>Valor</th>
-            <th>Recebida?</th>
+            <th>Paga?</th>
             <th>Ações</th>
         </tr>
         </thead>
@@ -24,17 +20,17 @@ window.billReceiveListComponent = Vue.extend({
                 'green white-text': o.done == 1,
                 'red white-text': o.done == 0
             }">
-                {{ o.done | receiveLabel }}
+                {{ o.done | payLabel }}
             </td>
             <td>
-                <a v-link="{name: 'bill-receive.update', params: { id: o.id }}">Editar</a> | 
+                <a v-link="{name: 'bill-pay.update', params: { id: o.id }}">Editar</a> |
                 <a href="#" @click.prevent="openModalDelete(o)">Excluir</a>
             </td>
         </tr>
         </tbody>
     </table>
     <modal-component :modal="modal">
-        <div slot="content">
+        <div slot="content" v-if="billToDelete">
             <h4>Mensagem de confirmação</h4>
             <p><strong>Deseja excluir esta conta?</strong></p>
             <div class="divider"></div>
@@ -47,38 +43,48 @@ window.billReceiveListComponent = Vue.extend({
             <button class="btn btn-flat red white-text waves-effect waves-light modal-action modal-close" @click.prevent="billDelete()">OK</button>
             <button class="btn btn-flat white modal-action modal-close">Cancelar</button>
         </div>
-    </modal-component> 
-    `,
-    data() {
-        return {
-            bills: [],
-            billToDelete: null,
-            modal: {
-                id: 'modal-delete'
-            }
-        };
-    },
-    created() {
-        BillReceive.query().then((response) => {
-            this.bills = response.data;
-            this.$dispatch('update-info');
-        });
-        $(document).ready(function () {
-            $('#modal-delete').modal();
-        });
-    },
-    methods: {
-        billDelete() {
-            BillReceive.delete({id: this.billToDelete.id}).then((response) => {
-                this.bills.$remove(this.billToDelete);
-                this.billToDelete = null;
-                Materialize.toast('Conta excluída com sucesso. <i class="material-icons right">done</i>', 4000);
+    </modal-component>
+</template>
+
+<script type="text/javascript">
+    import * as resources from '../resources';
+    import ModalComponent from '../Modal.vue';
+
+    export default {
+        components: {
+            'modal-component': ModalComponent
+        },
+        data() {
+            return {
+                bills: [],
+                billToDelete: null,
+                modal: {
+                    id: 'modal-delete'
+                }
+            };
+        },
+        created() {
+            resources.BillPayResource.query().then((response) => {
+                this.bills = response.data;
                 this.$dispatch('update-info');
             });
         },
-        openModalDelete( bill ) {
-            this.billToDelete = bill;
-            $('#modal-delete').modal('open');
+        ready() {
+            $('#modal-delete').modal();
+        },
+        methods: {
+            billDelete() {
+                resources.BillPayResource.delete({id: this.billToDelete.id}).then((response) => {
+                    this.bills.$remove(this.billToDelete);
+                    this.billToDelete = null;
+                    Materialize.toast('Conta excluída com sucesso. <i class="material-icons right">done</i>', 4000);
+                    this.$dispatch('update-info');
+                });
+            },
+            openModalDelete( bill ) {
+                this.billToDelete = bill;
+                $('#modal-delete').modal('open');
+            }
         }
-    }
-});
+    };
+</script>

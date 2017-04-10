@@ -1,5 +1,4 @@
-window.billReceiveCreateComponent = Vue.extend({
-    template: `
+<template>
     <form @submit.prevent="submit">
         <div class="row">
             <div class="input-field col s6">
@@ -27,43 +26,50 @@ window.billReceiveCreateComponent = Vue.extend({
             <div class="input-field col s12">
                 <button class="btn right" type="submit">Enviar</button>
             </div>
-        </div>        
+        </div>
     </form>
-    `,
-    data() {
-        return {
-            billReceivesNames: [
-                'projeto symfony',
-                'projeto laravel',
-                'projeto silex'
-            ],
-            bill: new Bill()
-        };
-    },
-    created() {
-        if ( this.$route.name == 'bill-receive.update' ) {
-            this.getBill( this.$route.params.id );
-        }
-    },
-    methods: {
-        submit() {
-            let data = this.bill.toJSON();
-            if ( this.$route.name == 'bill-receive.create' ) {
-                BillReceive.save(data).then((response) => {
-                    this.$dispatch('update-info');
-                    this.$router.go({name: 'bill-receive.list'});
-                });
-            } else {
-                BillReceive.update({id: this.bill.id}, data).then((response) => {
-                    this.$dispatch('update-info');
-                    this.$router.go({name: 'bill-receive.list'});
-                });
+</template>
+
+<script type="text/javascript">
+    import * as resource from '../resources';
+    import {BillPay} from '../bill';
+
+    export default {
+        data() {
+            return {
+                billReceivesNames: [
+                    'projeto symfony',
+                    'projeto laravel',
+                    'projeto silex'
+                ],
+                bill: new BillPay()
+            };
+        },
+        created() {
+            if ( this.$route.name == 'bill-receive.update' ) {
+                this.getBill( this.$route.params.id );
             }
         },
-        getBill(id) {
-            BillReceive.get({id: id}).then((response) => {
-                this.bill = new Bill(response.data);
-            });
+        methods: {
+            submit() {
+                let data = this.bill.toJSON();
+                if ( this.$route.name == 'bill-receive.create' ) {
+                    resource.BillReceiveResource.save(data).then((response) => {
+                        this.$dispatch('update-info');
+                    this.$router.go({name: 'bill-receive.list'});
+                    });
+                } else {
+                    resource.BillReceiveResource.update({id: this.bill.id}, data).then((response) => {
+                        this.$dispatch('update-info');
+                    this.$router.go({name: 'bill-receive.list'});
+                    });
+                }
+            },
+            getBill(id) {
+                resource.BillReceiveResource.get({id: id}).then((response) => {
+                    this.bill = new BillPay(response.data);
+                });
+            }
         }
-    }
-});
+    };
+</script>

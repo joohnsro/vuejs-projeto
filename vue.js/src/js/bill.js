@@ -1,4 +1,4 @@
-class Bill {
+export class BillPay {
     constructor(data) {
         this.name = '';
         this.date_due = '';

@@ -1,8 +1,7 @@
-window.billComponent = Vue.extend({
-    template: `
+<template>
     <nav>
         <div class="nav-wrapper container">
-            <a href="#" class="brand-logo">Projeto 5</a>
+            <a href="#" class="brand-logo">Projeto 6</a>
             <a href="#" data-activates="nav-mobile" class="button-collapse">
                 <i class="material-icons">menu</i>
             </a>
@@ -32,36 +31,38 @@ window.billComponent = Vue.extend({
         </li>
     </ul>
     <router-view></router-view>
-    `,
-    data() {
-        return {
-            menus: [
-                { name: 'Dashboard', routeName: 'dashboard', dropdownId: null },
-                { name: 'Contas a pagar', routeName: 'bill-pay.list', dropdownId: 'bill-pay' },
-                { name: 'Contas a receber', routeName: 'bill-receive.list', dropdownId: 'bill-receive' }
-            ],
-            menusDropdown: [
-                {
-                    id: 'bill-pay',
-                    itens: [
-                        { name: "Listar contas", routeName: "bill-pay.list" },
-                        { name: "Criar conta", routeName: "bill-pay.create" }
-                    ]
-                },
-                {
-                    id: 'bill-receive',
-                    itens: [
-                        { name: "Listar contas", routeName: "bill-receive.list" },
-                        { name: "Criar conta", routeName: "bill-receive.create" }
-                    ]
-                }
-            ]
-        };
-    },
-    created() {
-        $(document).ready(function () {
+</template>
+
+<script type="text/javascript">
+    export default {
+        ready() {
             $(".button-collapse").sideNav();
             $(".dropdown-button").dropdown();
-        });
+        },
+        data() {
+            return {
+                menus: [
+                    { name: 'Dashboard', routeName: 'dashboard', dropdownId: null },
+                    { name: 'Contas a pagar', routeName: 'bill-pay.list', dropdownId: 'bill-pay' },
+                    { name: 'Contas a receber', routeName: 'bill-receive.list', dropdownId: 'bill-receive' }
+                ],
+                menusDropdown: [
+                    {
+                        id: 'bill-pay',
+                        itens: [
+                            { name: "Listar contas", routeName: "bill-pay.list" },
+                            { name: "Criar conta", routeName: "bill-pay.create" }
+                        ]
+                    },
+                    {
+                        id: 'bill-receive',
+                        itens: [
+                            { name: "Listar contas", routeName: "bill-receive.list" },
+                            { name: "Criar conta", routeName: "bill-receive.create" }
+                        ]
+                    }
+                ]
+            };
+        }
     }
-});
+</script>

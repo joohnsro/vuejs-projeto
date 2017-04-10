@@ -1,8 +1,7 @@
-window.billDashboardComponent = Vue.extend({
-    template: `
+<template>
     <div class="container">
         <h3>Dashboard</h3>
-        
+
         <div class="row">
             <div class="col s12 l4">
                 <div class="card">
@@ -36,34 +35,40 @@ window.billDashboardComponent = Vue.extend({
             </div>
         </div>
     </div>
-    `,
-    data() {
-        return {
-            totalPays: 0,
-            totalReceives: 0,
-            total: 0
-        };
-    },
-    created() {
-        this.getTotalBillsPays();
-        this.getTotalBillsReceives();
-        this.updateTotal();
-    },
-    methods: {
-        getTotalBillsPays() {
-            BillPay.totalDone().then((response) => {
-                this.totalPays = response.data.total;
+</template>
+
+<script type="text/javascript">
+    import * as resource from './resources';
+
+    module.exports = {
+        data() {
+            return {
+                totalPays: 0,
+                totalReceives: 0,
+                total: 0
+            };
+        },
+        created() {
+            this.getTotalBillsPays();
+            this.getTotalBillsReceives();
+            this.updateTotal();
+        },
+        methods: {
+            getTotalBillsPays() {
+                resource.BillPayResource.totalDone().then((response) => {
+                    this.totalPays = response.data.total;
+                    this.updateTotal();
+                });
+            },
+            getTotalBillsReceives() {
+                resource.BillReceiveResource.totalDone().then((response) => {
+                    this.totalReceives = response.data.total;
                 this.updateTotal();
             });
-        },
-        getTotalBillsReceives() {
-            BillReceive.totalDone().then((response) => {
-                this.totalReceives = response.data.total;
-                this.updateTotal();
-            });
-        },
-        updateTotal() {
-            this.total = this.totalReceives - this.totalPays;
+            },
+            updateTotal() {
+                this.total = this.totalReceives - this.totalPays;
+            }
         }
-    }
-});
+    };
+</script>
