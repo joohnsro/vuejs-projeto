@@ -60,12 +60,12 @@
             updateStatus() {
                 resource.BillPayResource.query().then((response) => {
                     this.countBills(response.data);
-                });
+            });
             },
             updateTotal() {
                 resource.BillPayResource.totalNotDone().then((response) => {
                     this.total = response.data.total;
-                });
+            });
             }
         },
         events: {

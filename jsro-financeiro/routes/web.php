@@ -19,6 +19,14 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/home', function () {
+    return redirect()->route('admin.dashboard');
+});
+
+Route::get('/app', function(){
+    return view('layouts.spa');
+});
+
 Route::group([
     'prefix'    => 'admin',
     'as'        => 'admin.'
@@ -27,6 +35,7 @@ Route::group([
     Auth::routes();
     
     Route::group(['middleware' => 'can:access-admin'], function () {
+        Route::get('/home', 'HomeController@index')->name('home');
         Route::get('/', 'Auth\DashboardController@index')->name('dashboard');
         Route::get('/bill-pay', 'Auth\BillPayListController@index')->name('bill-pay-list');
         Route::get('/bill-pay/create', 'Auth\BillPayCreateController@index')->name('bill-pay-create');
